@@ -203,7 +203,7 @@ class AccessController extends BaseAccessController
 
         try {
 
-            StoreAndSendOTP::dispatchAfterResponse(\auth()->id());
+            StoreAndSendOTP::dispatch(\auth()->id());
 
             return Responses::success(message: 'OTP resent');
 
