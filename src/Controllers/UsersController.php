@@ -6,13 +6,14 @@ use Illuminate\Http\JsonResponse;
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Lockminds\LaravelAuth\Models\User;
 
-class ProfileController extends BaseController
+class UsersController extends BaseController
 {
     public function index(): JsonResponse
     {
         try {
-            $id = auth('api')->id();
-            $profile = User::find($id);
+            $profile = \DB::table("users")
+                ->select(["id", "name", "email"])
+                ->paginate();
 
             return Responses::success(data: $profile);
         } catch (\Throwable $throwable) {

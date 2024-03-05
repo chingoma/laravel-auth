@@ -83,6 +83,20 @@ class AccessController extends BaseAccessController
         }
     }
 
+
+    public function generateUser(): JsonResponse
+    {
+        try {
+            $user = new User();
+            $user->name = Factory::create()->name;
+            $user->email = Factory::create()->email;
+            $user->save();
+            return Responses::success(data: $user);
+        } catch (Throwable $throwable) {
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
+        }
+    }
+
     public function sendResetPasswordLink(Request $request): JsonResponse
     {
         try {
