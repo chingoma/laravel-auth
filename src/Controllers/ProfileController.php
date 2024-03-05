@@ -13,8 +13,9 @@ class ProfileController extends BaseController
         try {
             $id = auth('api')->id();
             $profile = User::find($id);
+
             return Responses::success(data: $profile);
-        }   catch (\Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             return Responses::unhandledThrowable(throwable: $throwable, code: 400);
         }
     }
@@ -24,8 +25,9 @@ class ProfileController extends BaseController
         try {
             $id = auth('api')->id();
             $profile = User::find($id);
+
             return Responses::success(data: $profile);
-        }   catch (\Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             return Responses::unhandledThrowable(throwable: $throwable, code: 400);
         }
     }

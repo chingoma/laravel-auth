@@ -4,5 +4,4 @@ namespace Lockminds\LaravelAuth;
 
 class LaravelAuth
 {
-
 }

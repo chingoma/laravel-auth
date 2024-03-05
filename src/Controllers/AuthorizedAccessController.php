@@ -10,7 +10,6 @@ use Throwable;
 
 class AuthorizedAccessController extends AuthorizedAccessTokenController
 {
-
     public function destroy(Request $request, $tokenId): JsonResponse
     {
 
@@ -21,18 +20,17 @@ class AuthorizedAccessController extends AuthorizedAccessTokenController
             );
 
             if (is_null($token)) {
-                return Responses::badCredentials(code:"invalid_token", message:"Invalid token");
+                return Responses::badCredentials(code: 'invalid_token', message: 'Invalid token');
             }
 
             $token->revoke();
 
             $this->refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
-            return Responses::success(code:"token_revoked", message:"Token revoked");
+            return Responses::success(code: 'token_revoked', message: 'Token revoked');
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
-
 }

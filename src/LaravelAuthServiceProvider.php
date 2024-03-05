@@ -3,9 +3,9 @@
 namespace Lockminds\LaravelAuth;
 
 use Illuminate\Support\Facades\Route;
+use Lockminds\LaravelAuth\Commands\LaravelAuthCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Lockminds\LaravelAuth\Commands\LaravelAuthCommand;
 
 class LaravelAuthServiceProvider extends PackageServiceProvider
 {
@@ -28,8 +28,8 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
     {
         // ... other things
         $this->registerRoutes();
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     protected function registerRoutes(): void

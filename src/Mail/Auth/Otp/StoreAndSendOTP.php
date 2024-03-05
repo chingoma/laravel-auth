@@ -26,8 +26,6 @@ class StoreAndSendOTP extends Mailable
 
     /**
      * Get the message envelope.
-     *
-     * @return Envelope
      */
     public function envelope(): Envelope
     {
@@ -38,8 +36,6 @@ class StoreAndSendOTP extends Mailable
 
     /**
      * Get the message content definition.
-     *
-     * @return Content
      */
     public function content(): Content
     {
@@ -50,8 +46,6 @@ class StoreAndSendOTP extends Mailable
 
     /**
      * Get the attachments for the message.
-     *
-     * @return array
      */
     public function attachments(): array
     {
