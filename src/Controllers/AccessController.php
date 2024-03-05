@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
-use Laravel\Passport\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\AccessTokenController as BaseAccessController;
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Lockminds\LaravelAuth\Helpers\Validations;

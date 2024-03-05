@@ -39,6 +39,7 @@ class Responses
     public static function unhandledThrowable(\Throwable $throwable, $code, $message = 'unhandled exception', $data = []): JsonResponse
     {
         report($throwable);
+
         return response()->json([
             'code' => $code,
             'success' => false,
@@ -50,6 +51,7 @@ class Responses
     public static function unhandledException(\Exception $exception, $code, $message = 'unhandled exception', $data = []): JsonResponse
     {
         report($exception);
+
         return response()->json([
             'code' => $code,
             'success' => false,
