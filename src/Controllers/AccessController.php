@@ -20,14 +20,12 @@ use Laravel\Passport\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\AccessTokenController as BaseAccessController;
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Lockminds\LaravelAuth\Helpers\Validations;
-use Lockminds\LaravelAuth\Mail\Auth\Otp\StoreAndSendOTP;
 use Lockminds\LaravelAuth\Models\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
 class AccessController extends BaseAccessController
 {
-
     public function issueToken(ServerRequestInterface $request): JsonResponse
     {
         try {
@@ -36,7 +34,7 @@ class AccessController extends BaseAccessController
             $username = $request->getParsedBody()['username'];
 
             //get user
-            $user = DB::table("users")
+            $user = DB::table('users')
                 ->where('email', '=', $username)
                 ->first();
 
@@ -54,17 +52,15 @@ class AccessController extends BaseAccessController
             $user->put('access_token', $data['access_token']);
             $user->put('refresh_token', $data['refresh_token']);
             $user->put('expires_at', $data['expires_in']);
-            $user->put('status', "success");
+            $user->put('status', 'success');
             \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse($user->id);
+
             return response()->json($user);
-        }
-        catch (ModelNotFoundException $e) { // email notfound
+        } catch (ModelNotFoundException $e) { // email notfound
             return Responses::badCredentials(code: 400);
-        }
-        catch (OAuthServerException $e) { //password not correct..token not granted
+        } catch (OAuthServerException $e) { //password not correct..token not granted
             return Responses::badCredentials(code: 400);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return Responses::unhandledException(exception: $e, code: 400);
         }
     }
@@ -76,12 +72,12 @@ class AccessController extends BaseAccessController
             $clients = App::make(ClientRepository::class);
             $client = $clients->create(userId: null, name: $factory->name, redirect: '', password: true);
 
-            return Responses::success(code: 200,data: [
+            return Responses::success(code: 200, data: [
                 'client_id' => $client->id,
                 'client_secret' => $client->secret,
             ]);
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
 
@@ -89,11 +85,11 @@ class AccessController extends BaseAccessController
     {
         try {
 
-            $user = DB::table("uses")
-                ->where("email",$request->email)
+            $user = DB::table('uses')
+                ->where('email', $request->email)
                 ->first();
 
-            if(empty($user->email)){
+            if (empty($user->email)) {
                 return Responses::badCredentials(code: 400);
             }
 
@@ -102,11 +98,11 @@ class AccessController extends BaseAccessController
             );
 
             return $status === Password::RESET_LINK_SENT
-                ? Responses::success(code: 200,message: "Password reset link has been sent to your email")
-                : Responses::error(code: 400,message: __($status));
+                ? Responses::success(code: 200, message: 'Password reset link has been sent to your email')
+                : Responses::error(code: 400, message: __($status));
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable($throwable, code: "unhandledException");
+            return Responses::unhandledThrowable($throwable, code: 'unhandledException');
         }
     }
 
@@ -118,14 +114,14 @@ class AccessController extends BaseAccessController
             $validation = Validator::make($request->all(), Validations::changePassword());
 
             if ($validation->fails()) {
-                return Responses::validationError(code: 400,message: $validation->messages()->first(),data: $validation->errors());
+                return Responses::validationError(code: 400, message: $validation->messages()->first(), data: $validation->errors());
             }
 
             $status = Password::reset(
                 $request->only('email', 'password', 'password_confirmation', 'token'),
                 function (User $user, string $password) {
                     $user->forceFill([
-                        'password' => Hash::make($password)
+                        'password' => Hash::make($password),
                     ])->setRememberToken(Str::random(60));
 
                     $user->save();
@@ -135,11 +131,11 @@ class AccessController extends BaseAccessController
             );
 
             return $status === Password::PASSWORD_RESET
-                ? Responses::success(code: 200,message: "Password reset successfully")
-                : Responses::error(code: 400,message: __($status));
+                ? Responses::success(code: 200, message: 'Password reset successfully')
+                : Responses::error(code: 400, message: __($status));
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
 
@@ -151,16 +147,16 @@ class AccessController extends BaseAccessController
             $validator = Validator::make($request->all(), Validations::resetPassword());
 
             if ($validator->fails()) {
-                return Responses::validationError(code: 400,message: $validator->messages()->first(),data: $validator->errors());
+                return Responses::validationError(code: 400, message: $validator->messages()->first(), data: $validator->errors());
             }
 
             $user = User::find($request->id);
 
-            if(empty($user->email)){
+            if (empty($user->email)) {
                 return Responses::badCredentials(code: 400);
             }
 
-            if(!Hash::check($request->current_password, $user->password)){
+            if (! Hash::check($request->current_password, $user->password)) {
                 return Responses::badCredentials(code: 400);
             }
 
@@ -168,7 +164,7 @@ class AccessController extends BaseAccessController
                 $request->only('email', 'password', 'password_confirmation', 'token'),
                 function (User $user, string $password) {
                     $user->forceFill([
-                        'password' => Hash::make($password)
+                        'password' => Hash::make($password),
                     ])->setRememberToken(Str::random(60));
 
                     $user->save();
@@ -178,11 +174,11 @@ class AccessController extends BaseAccessController
             );
 
             return $status === Password::PASSWORD_RESET
-                ? Responses::success(code: 200,message: "Password reset successfully")
-                : Responses::error(code: 400,message: __($status));
+                ? Responses::success(code: 200, message: 'Password reset successfully')
+                : Responses::error(code: 400, message: __($status));
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
 
@@ -192,10 +188,11 @@ class AccessController extends BaseAccessController
         try {
 
             Auth::logout();
-            return Responses::success(code: 200,message: "You have successfully logged out");
+
+            return Responses::success(code: 200, message: 'You have successfully logged out');
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
 
@@ -205,10 +202,11 @@ class AccessController extends BaseAccessController
         try {
 
             \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse(\auth()->id());
-            return Responses::success(code: 200,message: "OTP resent");
+
+            return Responses::success(code: 200, message: 'OTP resent');
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
 
@@ -221,23 +219,24 @@ class AccessController extends BaseAccessController
 
             $oldOtp = \Cache::get($key);
 
-            if(empty($oldOtp)){
-                \Cache::put("otp-verified-".$key,false);
-                return Responses::error(code: 400,message: "OTP Expired");
+            if (empty($oldOtp)) {
+                \Cache::put('otp-verified-'.$key, false);
+
+                return Responses::error(code: 400, message: 'OTP Expired');
             }
 
-            if($request->otp !== $oldOtp){
-                \Cache::put("otp-verified-".$key,false);
-                return Responses::error(code: 400,message: "OTP Expired");
+            if ($request->otp !== $oldOtp) {
+                \Cache::put('otp-verified-'.$key, false);
+
+                return Responses::error(code: 400, message: 'OTP Expired');
             }
 
-            \Cache::put("otp-verified-".$key,true);
+            \Cache::put('otp-verified-'.$key, true);
 
-            return Responses::success(code: 200,message: "OTP Verified");
+            return Responses::success(code: 200, message: 'OTP Verified');
 
         } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: "unhandledException");
+            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
-
 }

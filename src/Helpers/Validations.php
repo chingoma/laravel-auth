@@ -6,32 +6,30 @@ use Illuminate\Validation\Rules\Password;
 
 class Validations
 {
-
     public static function changePassword(): array
     {
-        return  [
+        return [
             'token' => 'required',
             'email' => 'required|email',
-            "password" => ["required","confirmed", Password::min(8)
+            'password' => ['required', 'confirmed', Password::min(8)
                 ->letters()
                 ->mixedCase()
                 ->numbers()
-                ->symbols()
-            ]
+                ->symbols(),
+            ],
         ];
     }
 
     public static function resetPassword(): array
     {
-        return  [
+        return [
             'email' => 'required|email',
-            "password" => ["required","confirmed", Password::min(8)
+            'password' => ['required', 'confirmed', Password::min(8)
                 ->letters()
                 ->mixedCase()
                 ->numbers()
-                ->symbols()
-            ]
+                ->symbols(),
+            ],
         ];
     }
-
 }

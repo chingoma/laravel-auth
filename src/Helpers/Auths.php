@@ -16,12 +16,11 @@ class Auths
             $otp = rand(100000, 999999);
             $key = auth()->id();
             Cache::delete($key);
-            Cache::put([$key => $otp], now()->addMinutes(config("auth.otp_expires_in")));
+            Cache::put([$key => $otp], now()->addMinutes(config('auth.otp_expires_in')));
             $mailable = new StoreAndSendOTP($otp);
             Mail::to($user)->queue($mailable);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             report($exception);
         }
     }
-
 }

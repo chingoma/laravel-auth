@@ -14,14 +14,14 @@ Route::post('send-reset-password-link', [AccessController::class, 'sendResetPass
 
 Route::post('change-password', [AccessController::class, 'changePassword']);
 
-Route::group(['middleware' => ['auth:api',OTPVerifiedMiddleware::class]], function () {
+Route::group(['middleware' => ['auth:api', OTPVerifiedMiddleware::class]], function () {
     Route::post('logout', [AuthorizedAccessTokenController::class, 'destroy']);
     Route::post('refresh-token', [AccessController::class, 'issueToken']);
     Route::post('reset-password', [AccessController::class, 'resetPassword']);
     Route::post('resend-otp', [AccessController::class, 'resendOTP']);
 
     Route::group(['middleware' => [OTPVerifiedMiddleware::class]], function () {
-        Route::get("profile", [ProfileController::class,"profile"]);
+        Route::get('profile', [ProfileController::class, 'profile']);
     });
 
 });
