@@ -42,7 +42,7 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
     protected function routeConfiguration(): array
     {
         return [
-            'prefix' => config('laravel-auth.prefix'),
+            'prefix' => config('auth.route_prefix'),
         ];
     }
 }
