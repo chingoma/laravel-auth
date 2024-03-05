@@ -35,7 +35,7 @@ class AccessController extends BaseAccessController
 
             //get user
             $user = DB::table('users')
-                ->select(['id','email'])
+                ->select(['id', 'email'])
                 ->where('email', '=', $username)
                 ->first();
 
