@@ -5,29 +5,27 @@ namespace Lockminds\LaravelAuth\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Passport\Http\Controllers\AuthorizedAccessTokenController;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Throwable;
 
-class AuthorizedAccessController extends AuthorizedAccessTokenController
+class AuthorizedAccessController extends BaseController
 {
-    public function destroy(Request $request, $tokenId): JsonResponse
+    public function destroy(Request $request): JsonResponse
     {
 
         try {
 
             $tokenId = $request->user()->token()->id;
+            $tokenRepository = app(TokenRepository::class);
+            $refreshTokenRepository = app(RefreshTokenRepository::class);
 
-            $token = $this->tokenRepository->findForUser(
-                $tokenId, $request->user()->getAuthIdentifier()
-            );
+            // Revoke an access token...
+            $tokenRepository->revokeAccessToken($tokenId);
 
-            if (is_null($token)) {
-                return Responses::badCredentials(code: 'invalid_token', message: 'Invalid token');
-            }
-
-            $token->revoke();
-
-            $this->refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
+            // Revoke all of the token's refresh tokens...
+            $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
             return Responses::success(code: 'token_revoked', message: 'Token revoked');
 
