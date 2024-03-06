@@ -8,7 +8,7 @@ use Lockminds\LaravelAuth\Middlewares\OTPVerifiedMiddleware;
 
 Route::post('get-token', [AccessController::class, 'issueToken']);
 
-Route::post('get-client', [AccessController::class, 'generateUser']);
+Route::post('get-client', [AccessController::class, 'createClient']);
 
 Route::post('send-reset-password-link', [AccessController::class, 'sendResetPasswordLink']);
 
