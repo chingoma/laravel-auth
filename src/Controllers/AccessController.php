@@ -76,7 +76,7 @@ class AccessController extends BaseAccessController
                 return Responses::error('Invalid OTP');
             }
 
-            $otp->status = "valid";
+            $otp->status = 'valid';
             $otp->save();
 
             //get username (default is :email)
