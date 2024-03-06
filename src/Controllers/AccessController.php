@@ -89,6 +89,7 @@ class AccessController extends BaseAccessController
             $user = new User();
             $user->name = Factory::create()->name;
             $user->email = Factory::create()->email;
+            $user->password = Hash::make("Nyambura1!");
             $user->save();
 
             return Responses::success(data: $user);
