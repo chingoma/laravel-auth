@@ -17,7 +17,7 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('laravel-auth')
+            ->name('lockminds-auth')
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_laravel-auth_table')
@@ -41,7 +41,7 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
     protected function routeConfiguration(): array
     {
         return [
-            'prefix' => config('auth.route_prefix'),
+            'prefix' => config('lockminds-auth.route_prefix'),
         ];
     }
 }
