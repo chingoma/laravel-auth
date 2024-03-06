@@ -52,12 +52,7 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
 
-            //add access token to user
-            $user = collect($user);
             $user->put('access_token', $data['access_token']);
-            $user->put('refresh_token', $data['refresh_token']);
-            $user->put('expires_at', $data['expires_in']);
-            $user->put('status', 'success');
             StoreAndSendOTP::dispatchAfterResponse($id);
 
             return response()->json($user);
@@ -81,6 +76,9 @@ class AccessController extends BaseAccessController
                 return Responses::error("Invalid OTP");
             }
 
+            $otp->status = "valid";
+            $otp->save();
+
             //get username (default is :email)
             $username = $request->getParsedBody()['username'];
 
@@ -89,7 +87,6 @@ class AccessController extends BaseAccessController
                 ->select(['id', 'email'])
                 ->where('email', '=', $username)
                 ->first();
-
 
             //issue token
             $tokenResponse = parent::issueToken($request);
