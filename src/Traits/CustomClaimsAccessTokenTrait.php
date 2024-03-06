@@ -16,8 +16,8 @@ trait CustomClaimsAccessTokenTrait
     private function convertToJWT(): UnencryptedToken
     {
         $this->initJwtConfiguration();
-        $otp = Otp::where("user_id",$this->getUserIdentifier())
-            ->where("status","valid")
+        $otp = Otp::where('user_id', $this->getUserIdentifier())
+            ->where('status', 'valid')
             ->first();
 
         return $this->jwtConfiguration->builder()
@@ -28,7 +28,7 @@ trait CustomClaimsAccessTokenTrait
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
-            ->withClaim('otp', $otp->status??"") // your custom claim
+            ->withClaim('otp', $otp->status ?? '') // your custom claim
             ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
     }
 

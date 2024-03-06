@@ -67,13 +67,13 @@ class AccessController extends BaseAccessController
     {
         try {
 
-            $otp = Otp::where("user_id",\auth()->id())
-                ->where("otp",$request->getParsedBody()["otp"])
-                ->whereDate("expires_at","<",now()->toDateTimeString())
+            $otp = Otp::where('user_id', \auth()->id())
+                ->where('otp', $request->getParsedBody()['otp'])
+                ->whereDate('expires_at', '<', now()->toDateTimeString())
                 ->first();
 
-            if(empty($otp)){
-                return Responses::error("Invalid OTP");
+            if (empty($otp)) {
+                return Responses::error('Invalid OTP');
             }
 
             $otp->status = "valid";
