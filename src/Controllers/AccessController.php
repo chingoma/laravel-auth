@@ -20,6 +20,7 @@ use Laravel\Passport\Http\Controllers\AccessTokenController as BaseAccessControl
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Lockminds\LaravelAuth\Helpers\Validations;
 use Lockminds\LaravelAuth\Jobs\StoreAndSendOTP;
+use Lockminds\LaravelAuth\Models\Otp;
 use Lockminds\LaravelAuth\Models\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
@@ -59,6 +60,53 @@ class AccessController extends BaseAccessController
             $user->put('expires_at', $data['expires_in']);
             $user->put('status', 'success');
             StoreAndSendOTP::dispatchAfterResponse($id);
+
+            return response()->json($user);
+        } catch (ModelNotFoundException $e) { // email notfound
+            return Responses::badCredentials(code: 400);
+        } catch (Exception $e) {
+            return Responses::unhandledException(exception: $e, code: 400);
+        }
+    }
+
+    public function verifyOTP(ServerRequestInterface $request): JsonResponse
+    {
+        try {
+
+            $otp = Otp::where("user_id",\auth()->id())
+                ->where("otp",$request->getParsedBody()["otp"])
+                ->whereDate("expires_at","<",now()->toDateTimeString())
+                ->first();
+
+            if(empty($otp)){
+                return Responses::error("Invalid OTP");
+            }
+
+            //get username (default is :email)
+            $username = $request->getParsedBody()['username'];
+
+            //get user
+            $user = DB::table('users')
+                ->select(['id', 'email'])
+                ->where('email', '=', $username)
+                ->first();
+
+
+            //issue token
+            $tokenResponse = parent::issueToken($request);
+
+            //convert response to json string
+            $content = $tokenResponse->getContent();
+
+            //convert json to array
+            $data = json_decode($content, true);
+
+            //add access token to user
+            $user = collect($user);
+            $user->put('access_token', $data['access_token']);
+            $user->put('refresh_token', $data['refresh_token']);
+            $user->put('expires_at', $data['expires_in']);
+            $user->put('status', 'success');
 
             return response()->json($user);
         } catch (ModelNotFoundException $e) { // email notfound
@@ -228,7 +276,7 @@ class AccessController extends BaseAccessController
         }
     }
 
-    public function verifyOTP(Request $request): JsonResponse
+    public function verifyOTPs(Request $request): JsonResponse
     {
 
         try {

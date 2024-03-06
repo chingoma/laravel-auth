@@ -4,6 +4,7 @@ namespace Lockminds\LaravelAuth\Traits;
 
 use Lcobucci\JWT\UnencryptedToken;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
+use Lockminds\LaravelAuth\Models\Otp;
 
 trait CustomClaimsAccessTokenTrait
 {
@@ -17,6 +18,9 @@ trait CustomClaimsAccessTokenTrait
     private function convertToJWT(): UnencryptedToken
     {
         $this->initJwtConfiguration();
+        $otp = Otp::where("user_id",$this->getUserIdentifier())
+            ->where("status","valid")
+            ->first();
 
         return $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
@@ -26,7 +30,7 @@ trait CustomClaimsAccessTokenTrait
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string)$this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
-            ->withClaim('otp', 123123) // your custom claim
+            ->withClaim('otp', $otp->status??"") // your custom claim
             ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
     }
 

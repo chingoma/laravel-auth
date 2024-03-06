@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('user_id')->nullable()->index();
             $table->dateTime('expires_at')->index();
             $table->string('otp')->index();
+            $table->string('status')->default("invalid")->index();
             $table->timestamps();
         });
     }
