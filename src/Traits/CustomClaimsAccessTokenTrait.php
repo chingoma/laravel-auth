@@ -20,6 +20,10 @@ trait CustomClaimsAccessTokenTrait
             ->where('status', 'valid')
             ->first();
 
+        if($otp->status == "valid"){
+            Otp::where("id", $this->getUserIdentifier())->delete();
+        }
+
         return $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
