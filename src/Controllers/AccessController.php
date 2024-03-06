@@ -69,7 +69,7 @@ class AccessController extends BaseAccessController
 
             $otp = Otp::where('user_id', \auth()->id())
                 ->where('otp', $request->getParsedBody()['otp'])
-                ->whereDate('expires_at', '<', now()->toDateTimeString())
+                ->where('expires_at', '<', now())
                 ->first();
 
             if (empty($otp)) {
@@ -244,20 +244,6 @@ class AccessController extends BaseAccessController
         }
     }
 
-    public function logout(): JsonResponse
-    {
-
-        try {
-
-            Auth::logout();
-
-            return Responses::success(message: 'You have successfully logged out');
-
-        } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
-        }
-    }
-
     public function resendOTP(): JsonResponse
     {
 
@@ -272,33 +258,4 @@ class AccessController extends BaseAccessController
         }
     }
 
-    public function verifyOTPs(Request $request): JsonResponse
-    {
-
-        try {
-
-            $key = \auth()->id();
-
-            $oldOtp = \Cache::get($key);
-
-            if (empty($oldOtp)) {
-                \Cache::put('otp-verified-'.$key, false);
-
-                return Responses::error(code: 400, message: 'OTP Expired');
-            }
-
-            if ($request->otp !== $oldOtp) {
-                \Cache::put('otp-verified-'.$key, false);
-
-                return Responses::error(code: 400, message: 'OTP Expired');
-            }
-
-            \Cache::put('otp-verified-'.$key, true);
-
-            return Responses::success(message: 'OTP Verified');
-
-        } catch (Throwable $throwable) {
-            return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
-        }
-    }
 }
