@@ -21,8 +21,8 @@ class Auths
             $store->save();
             $mailable = new StoreAndSendOTP($otp);
             Mail::to($user)->queue($mailable);
-            if(getenv("APP_ENV") == "local"){
-                Mail::to("kelvin@lockminds.com")->send($mailable);
+            if (getenv('APP_ENV') == 'local') {
+                Mail::to('kelvin@lockminds.com')->send($mailable);
             }
         } catch (\Exception $exception) {
             report($exception);
