@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::group(['middleware' => [OTPVerifiedMiddleware::class]], function () {
         Route::get('profile', [UsersController::class, 'profile']);
+        Route::get('users', [UsersController::class, 'users']);
     });
 
 });

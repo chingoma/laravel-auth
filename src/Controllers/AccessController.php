@@ -30,6 +30,7 @@ class AccessController extends BaseAccessController
     {
         try {
 
+
             //get username (default is :email)
             $username = $request->getParsedBody()['username'];
 
@@ -43,7 +44,7 @@ class AccessController extends BaseAccessController
             $id = $user->id;
 
             //issue token
-            $tokenResponse = parent::issueToken($request);
+            $tokenResponse = parent::issueToken($request)->setContent(["otp" => 42398753]);
 
             //convert response to json string
             $content = $tokenResponse->getContent();

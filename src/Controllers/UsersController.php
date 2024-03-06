@@ -8,14 +8,14 @@ use Lockminds\LaravelAuth\Models\User;
 
 class UsersController extends BaseController
 {
-    public function index(): JsonResponse
+    public function users(): JsonResponse
     {
         try {
-            $profile = \DB::table('users')
+            $users = \DB::table('users')
                 ->select(['id', 'name', 'email'])
                 ->paginate();
 
-            return Responses::success(data: $profile);
+            return Responses::success(data: $users);
         } catch (\Throwable $throwable) {
             return Responses::unhandledThrowable(throwable: $throwable, code: 400);
         }
