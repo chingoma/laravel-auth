@@ -28,6 +28,20 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
         // ... other things
         $this->registerRoutes();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'lockminds-auth');
+
+        if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__.'/../config/lockminds-auth.php' => config_path('lockminds-auth.php'),
+            ], 'config');
+
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/lockminds-auth'),
+            ], 'views');
+        }
+
     }
 
     protected function registerRoutes(): void
