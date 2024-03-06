@@ -15,6 +15,8 @@ class AuthorizedAccessController extends AuthorizedAccessTokenController
 
         try {
 
+            $tokenId = $request->user()->token()->id;
+
             $token = $this->tokenRepository->findForUser(
                 $tokenId, $request->user()->getAuthIdentifier()
             );
