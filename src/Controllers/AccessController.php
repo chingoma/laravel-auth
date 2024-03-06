@@ -39,9 +39,6 @@ class AccessController extends BaseAccessController
                 ->where('email', '=', $username)
                 ->first();
 
-            // get user id
-            $id = $user->id;
-
             //issue token
             $tokenResponse = parent::issueToken($request);
 
@@ -51,11 +48,9 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
 
-            $user = collect($user);
-            $user->put('access_token', $data['access_token']);
-            StoreAndSendOTP::dispatchAfterResponse($id);
+            StoreAndSendOTP::dispatchAfterResponse($user->id);
 
-            return response()->json($user);
+            return response()->json(['access_token', $data['access_token']]);
         } catch (ModelNotFoundException $e) { // email notfound
             return Responses::badCredentials(code: 400);
         } catch (Exception $e) {
