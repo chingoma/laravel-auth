@@ -17,7 +17,7 @@ class AuthorizedAccessController extends BaseController
     {
 
         try {
-            $token  = $request->bearerToken();
+            $token = $request->bearerToken();
             $tokenId = (new Parser(new JoseEncoder()))->parse($token)->claims()->get('jti');
             $tokenRepository = app(TokenRepository::class);
             $refreshTokenRepository = app(RefreshTokenRepository::class);
