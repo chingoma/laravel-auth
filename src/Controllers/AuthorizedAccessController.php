@@ -4,7 +4,6 @@ namespace Lockminds\LaravelAuth\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Laravel\Passport\Http\Controllers\AuthorizedAccessTokenController;
 use Laravel\Passport\RefreshTokenRepository;
 use Laravel\Passport\TokenRepository;
 use Lockminds\LaravelAuth\Helpers\Responses;
