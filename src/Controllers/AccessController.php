@@ -51,6 +51,7 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
 
+            $user = collect($user);
             $user->put('access_token', $data['access_token']);
             StoreAndSendOTP::dispatchAfterResponse($id);
 
