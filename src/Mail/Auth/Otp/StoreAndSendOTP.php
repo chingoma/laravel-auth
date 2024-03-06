@@ -40,7 +40,7 @@ class StoreAndSendOTP extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'auth::emails.auth.opt.sent',
+            markdown: 'laravel-auth::emails.auth.opt.sent',
         );
     }
 
