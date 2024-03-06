@@ -11,8 +11,8 @@ class UsersController extends BaseController
     public function index(): JsonResponse
     {
         try {
-            $profile = \DB::table("users")
-                ->select(["id", "name", "email"])
+            $profile = \DB::table('users')
+                ->select(['id', 'name', 'email'])
                 ->paginate();
 
             return Responses::success(data: $profile);
