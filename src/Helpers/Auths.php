@@ -12,7 +12,7 @@ class Auths
     public static function storeAndSendOTP($key): void
     {
         try {
-            Otp::where("user_id",$key)->delete();
+            Otp::where('user_id', $key)->delete();
             $user = User::find($key);
             $otp = rand(100000, 999999);
             $store = new Otp();
