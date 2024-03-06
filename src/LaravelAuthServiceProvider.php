@@ -29,7 +29,6 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
         // ... other things
         $this->registerRoutes();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     protected function registerRoutes(): void
