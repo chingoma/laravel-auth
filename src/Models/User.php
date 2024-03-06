@@ -5,11 +5,13 @@ namespace Lockminds\LaravelAuth\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Lockminds\LaravelAuth\Traits\UuidForKey;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use Notifiable;
+    use UuidForKey;
 
     /**
      * The attributes that are mass assignable.
