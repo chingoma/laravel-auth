@@ -31,7 +31,6 @@ class AccessController extends BaseAccessController
     {
         try {
 
-
             //get username (default is :email)
             $username = $request->getParsedBody()['username'];
 

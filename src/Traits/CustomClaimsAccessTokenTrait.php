@@ -12,8 +12,6 @@ trait CustomClaimsAccessTokenTrait
 
     /**
      * Generate a JWT from the access token
-     *
-     * @return UnencryptedToken
      */
     private function convertToJWT(): UnencryptedToken
     {
@@ -28,7 +26,7 @@ trait CustomClaimsAccessTokenTrait
             ->issuedAt(new \DateTimeImmutable())
             ->canOnlyBeUsedAfter(new \DateTimeImmutable())
             ->expiresAt($this->getExpiryDateTime())
-            ->relatedTo((string)$this->getUserIdentifier())
+            ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
             ->withClaim('otp', $otp->status??"") // your custom claim
             ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
@@ -41,5 +39,4 @@ trait CustomClaimsAccessTokenTrait
     {
         return $this->convertToJWT()->toString();
     }
-
 }
