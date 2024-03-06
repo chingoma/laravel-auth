@@ -44,7 +44,7 @@ class AccessController extends BaseAccessController
             $id = $user->id;
 
             //issue token
-            $tokenResponse = parent::issueToken($request)->setContent(["otp" => 42398753]);
+            $tokenResponse = parent::issueToken($request);
 
             //convert response to json string
             $content = $tokenResponse->getContent();
