@@ -30,7 +30,7 @@ class AuthorizedAccessController extends BaseController
             // Revoke all of the token's refresh tokens...
             $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
-            Otp::where("user_id", $userId)->delete();
+            Otp::where('user_id', $userId)->delete();
 
             return Responses::success(code: 'token_revoked', message: 'Token revoked');
 
