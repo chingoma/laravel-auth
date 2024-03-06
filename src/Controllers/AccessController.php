@@ -67,7 +67,7 @@ class AccessController extends BaseAccessController
         try {
 
             $otp = Otp::where('user_id', \auth()->id())
-                ->where("status","invalid")
+                ->where('status', 'invalid')
                 ->where('otp', $request->getParsedBody()['otp'])
                 ->where('expires_at', '>', now())
                 ->first();
