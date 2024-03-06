@@ -4,7 +4,7 @@
 return [
     'route_prefix' => 'lm-auth',
     'otp' => [
-        "ttl" => 3
+        'ttl' => 3,
     ], //minutes
     'middleware' => ['OTPVerifiedMiddleware'],
 ];
