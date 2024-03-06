@@ -14,7 +14,7 @@ Route::post('send-reset-password-link', [AccessController::class, 'sendResetPass
 
 Route::post('change-password', [AccessController::class, 'changePassword']);
 
-Route::post('generate-user', [AccessController::class, 'changePassword']);
+Route::post('generate-user', [AccessController::class, 'generateUser']);
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [AuthorizedAccessTokenController::class, 'destroy']);
