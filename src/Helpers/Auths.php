@@ -17,7 +17,7 @@ class Auths
             $store = new Otp();
             $store->user_id = $user->id;
             $store->otp = $otp;
-            $store->expires_at = now()->addMinutes(config('auth.otp.ttl'));
+            $store->expires_at = now()->addMinutes(config('lockminds-auth.otp.ttl'));
             $store->save();
             $mailable = new StoreAndSendOTP($otp);
             Mail::to($user)->queue($mailable);

@@ -20,7 +20,6 @@ class LaravelAuthServiceProvider extends PackageServiceProvider
             ->name('lockminds-auth')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-auth_table')
             ->hasCommand(LaravelAuthCommand::class);
     }
 
