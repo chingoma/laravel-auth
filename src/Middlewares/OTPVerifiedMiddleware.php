@@ -4,7 +4,6 @@ namespace Lockminds\LaravelAuth\Middlewares;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lockminds\LaravelAuth\Helpers\Responses;
@@ -16,7 +15,7 @@ class OTPVerifiedMiddleware
         $token = $request->bearerToken();
         $otpStatus = (new Parser(new JoseEncoder()))->parse($token)->claims()->get('otp');
 
-        if ($otpStatus !== "valid") {
+        if ($otpStatus !== 'valid') {
             return Responses::unauthorized(code: 400);
         }
 
