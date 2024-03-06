@@ -8,4 +8,5 @@ use Lockminds\LaravelAuth\Traits\CustomClaimsAccessTokenTrait;
 class LaravelAuthAccessToken extends AccessToken
 {
     use CustomClaimsAccessTokenTrait;
+
 }
