@@ -66,7 +66,10 @@ class AccessController extends BaseAccessController
                 StoreAndSendOTP::dispatch($user->id);
             }
 
-            return response()->json(['access_token', $data['access_token']]);
+            return response()->json([
+                'access_token' => $data['access_token'],
+                'refresh_token' => $data['refresh_token']
+                ]);
         } catch (ModelNotFoundException $e) { // email notfound
             return Responses::badCredentials(code: 400);
         } catch (Exception $e) {
