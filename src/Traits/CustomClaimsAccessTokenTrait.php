@@ -32,7 +32,7 @@ trait CustomClaimsAccessTokenTrait
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
-            ->withClaim('otp', $otp->status ?? '') // your custom claim
+            ->withClaim('otp', $otp->status ?? 'invalid') // your custom claim
             ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
     }
 
