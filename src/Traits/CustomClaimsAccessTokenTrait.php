@@ -20,9 +20,8 @@ trait CustomClaimsAccessTokenTrait
             ->where('status', 'valid')
             ->first();
 
-        if ($otp->status == 'valid') {
+        if (!empty($otp) && $otp->status == 'valid') {
             \Log::info(' valid otp found');
-
             Otp::where('id', $this->getUserIdentifier())->delete();
         } else {
             \Log::info('No valid otp found');
