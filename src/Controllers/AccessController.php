@@ -40,11 +40,11 @@ class AccessController extends BaseAccessController
                 ->where('email', '=', $username)
                 ->first();
 
-            if($request->getParsedBody()['grant_type'] == 'refresh_token') {
-                Log::info("Creating refresh token");
+            if ($request->getParsedBody()['grant_type'] == 'refresh_token') {
+                Log::info('Creating refresh token');
                 $otp = rand(100000, 999999);
                 $store = new Otp();
-                $store->status = "valid";
+                $store->status = 'valid';
                 $store->user_id = $user->id;
                 $store->otp = $otp;
                 $store->expires_at = now()->addMinutes(config('lockminds-auth.otp.ttl'));
@@ -59,8 +59,8 @@ class AccessController extends BaseAccessController
 
             //convert json to array
             $data = json_decode($content, true);
-            if($request->getParsedBody()['grant_type'] == 'password') {
-                Log::info("Creating new token");
+            if ($request->getParsedBody()['grant_type'] == 'password') {
+                Log::info('Creating new token');
                 StoreAndSendOTP::dispatch($user->id);
             }
 
