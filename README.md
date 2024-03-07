@@ -20,20 +20,25 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require canwork/laravel-auth
+composer require chingoma/laravel-auth
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-auth-migrations"
+php artisan vendor:publish --tag="lockminds-auth-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-auth-config"
+php artisan vendor:publish --tag="lockminds-auth-config"
+```
+
+Now what you have to do is to tell Passport to use our CustomAccessToken class as AccessToken entity, so in AuthServiceProvider.php in boot method add:
+```bash
+ Passport::useAccessTokenEntity(LaravelAuthAccessToken::class);
 ```
 
 This is the contents of the published config file:
@@ -46,7 +51,7 @@ return [
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag="laravel-auth-views"
+php artisan vendor:publish --tag="lockminds-auth-views"
 ```
 
 ## Usage
