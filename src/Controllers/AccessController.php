@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -40,6 +41,7 @@ class AccessController extends BaseAccessController
                 ->first();
 
             if($request->getParsedBody()['grant_type'] == 'refresh_token') {
+                Log::info("Creating refresh token");
                 $otp = rand(100000, 999999);
                 $store = new Otp();
                 $store->status = "valid";
@@ -58,6 +60,7 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
             if($request->getParsedBody()['grant_type'] == 'password') {
+                Log::info("Creating new token");
                 StoreAndSendOTP::dispatch($user->id);
             }
 
