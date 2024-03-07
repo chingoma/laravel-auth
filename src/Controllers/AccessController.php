@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Http\Controllers\AccessTokenController as BaseAccessController;
+use Lockminds\LaravelAuth\Helpers\Auths;
 use Lockminds\LaravelAuth\Helpers\Responses;
 use Lockminds\LaravelAuth\Helpers\Validations;
 use Lockminds\LaravelAuth\Jobs\StoreAndSendOTP;
@@ -61,6 +62,7 @@ class AccessController extends BaseAccessController
             $data = json_decode($content, true);
             if($request->getParsedBody()['grant_type'] == 'password') {
                 Log::info("Creating new token");
+                Auths::storeAndSendOTP($user->id);
                 StoreAndSendOTP::dispatch($user->id);
             }
 
