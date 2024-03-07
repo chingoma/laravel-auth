@@ -68,8 +68,8 @@ class AccessController extends BaseAccessController
 
             return response()->json([
                 'access_token' => $data['access_token'],
-                'refresh_token' => $data['refresh_token']
-                ]);
+                'refresh_token' => $data['refresh_token'],
+            ]);
         } catch (ModelNotFoundException $e) { // email notfound
             return Responses::badCredentials(code: 400);
         } catch (Exception $e) {
