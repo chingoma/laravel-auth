@@ -39,6 +39,16 @@ class AccessController extends BaseAccessController
                 ->where('email', '=', $username)
                 ->first();
 
+            if($request->getParsedBody()['grant_type'] == 'refresh_token') {
+                $otp = rand(100000, 999999);
+                $store = new Otp();
+                $store->status = "valid";
+                $store->user_id = $user->id;
+                $store->otp = $otp;
+                $store->expires_at = now()->addMinutes(config('lockminds-auth.otp.ttl'));
+                $store->save();
+            }
+
             //issue token
             $tokenResponse = parent::issueToken($request);
 
@@ -47,8 +57,9 @@ class AccessController extends BaseAccessController
 
             //convert json to array
             $data = json_decode($content, true);
-
-            StoreAndSendOTP::dispatchAfterResponse($user->id);
+            if($request->getParsedBody()['grant_type'] == 'password') {
+                StoreAndSendOTP::dispatch($user->id);
+            }
 
             return response()->json(['access_token', $data['access_token']]);
         } catch (ModelNotFoundException $e) { // email notfound
