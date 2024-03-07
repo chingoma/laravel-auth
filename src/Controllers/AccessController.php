@@ -40,6 +40,8 @@ class AccessController extends BaseAccessController
                 ->first();
 
             if($request->getParsedBody()['grant_type'] == 'refresh_token') {
+                \Log::info("creating refresh token for refresh_token");
+
                 $otp = rand(100000, 999999);
                 $store = new Otp();
                 $store->status = "valid";
@@ -58,6 +60,7 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
             if($request->getParsedBody()['grant_type'] == 'password') {
+                \Log::error("creating new token for password");
                 StoreAndSendOTP::dispatch($user->id);
             }
 

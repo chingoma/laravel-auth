@@ -12,6 +12,8 @@ class Auths
     public static function storeAndSendOTP($key): void
     {
         try {
+            \Log::info("Sending otp for ".$key);
+
             Otp::where('user_id', $key)->delete();
             $user = User::find($key);
             $otp = rand(100000, 999999);
@@ -25,6 +27,8 @@ class Auths
             if (getenv('APP_ENV') == 'local') {
                 Mail::to('kelvin@lockminds.com')->send($mailable);
             }
+            \Log::info("Sending otp for ".$key." SENT");
+
         } catch (\Exception $exception) {
             report($exception);
         }
