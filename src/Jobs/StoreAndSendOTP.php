@@ -17,7 +17,7 @@ class StoreAndSendOTP implements ShouldQueue
 
     public function __construct($key)
     {
-        \Log::info("dispatching otp job for ".$key);
+        \Log::info('dispatching otp job for '.$key);
         $this->key = $key;
     }
 
