@@ -21,7 +21,11 @@ trait CustomClaimsAccessTokenTrait
             ->first();
 
         if ($otp->status == 'valid') {
+            \Log::info(" valid otp found");
+
             Otp::where('id', $this->getUserIdentifier())->delete();
+        }else{
+            \Log::info("No valid otp found");
         }
 
         return $this->jwtConfiguration->builder()
