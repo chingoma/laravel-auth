@@ -37,7 +37,7 @@ class AccessController extends BaseAccessController
 
             //get user
             $user = DB::table('users')
-                ->select(['id', 'email','name'])
+                ->select(['id', 'email','firstname'])
                 ->where('email', '=', $username)
                 ->first();
 
@@ -68,7 +68,7 @@ class AccessController extends BaseAccessController
 
             return response()->json([
                 'token' => $data['access_token'],
-                'name' => $user->name,
+                'name' => $user->firstname,
                 'email' => $user->email,
                 'role' => "",
                 'permissions' => [],
