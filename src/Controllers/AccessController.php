@@ -72,6 +72,7 @@ class AccessController extends BaseAccessController
                 'email' => $user->email,
                 'role' => "",
                 'permissions' => [],
+                'notifications' => [],
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
             ]);
