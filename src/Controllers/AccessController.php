@@ -44,7 +44,7 @@ class AccessController extends BaseAccessController
             if ($request->getParsedBody()['grant_type'] == 'refresh_token') {
                 Log::info('Creating refresh token');
                 $otp = rand(100000, 999999);
-                Otp::where("user_id", $user->id)->delete();
+                Otp::where('user_id', $user->id)->delete();
                 $store = new Otp();
                 $store->status = 'valid';
                 $store->user_id = $user->id;
