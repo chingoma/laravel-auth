@@ -37,7 +37,6 @@ class AccessController extends BaseAccessController
 
             //get user
             $user = DB::table('users')
-                ->select(['id', 'email', 'firstname'])
                 ->where('email', '=', $username)
                 ->first();
 
@@ -64,14 +63,9 @@ class AccessController extends BaseAccessController
             }
 
             return response()->json([
-                'token' => $data['access_token'],
-                'name' => $user->firstname,
-                'id' => $user->id,
-                'email' => $user->email,
-                'role' => '',
-                'permissions' => [],
-                'notifications' => [],
-                'authToken' => $data['access_token'],
+                'code' => 400,
+                'success' => true,
+                'message' => "Successfully.",
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
             ]);
@@ -105,7 +99,6 @@ class AccessController extends BaseAccessController
 
             //get user
             $user = DB::table('users')
-                ->select(['id', 'email'])
                 ->where('email', '=', $username)
                 ->first();
 
@@ -120,12 +113,17 @@ class AccessController extends BaseAccessController
 
             //add access token to user
             $user = collect($user);
-            $user->put('access_token', $data['access_token']);
-            $user->put('refresh_token', $data['refresh_token']);
-            $user->put('expires_at', $data['expires_in']);
-            $user->put('status', 'success');
 
-            return response()->json($user);
+            return response()->json([
+                'code' => 400,
+                'success' => true,
+                'message' => "Successfully.",
+                'user' => $user,
+                'permissions' => [],
+                'notifications' => [],
+                'access_token' => $data['access_token'],
+                'refresh_token' => $data['refresh_token'],
+            ]);
         } catch (ModelNotFoundException $e) { // email notfound
             return Responses::badCredentials();
         } catch (Exception $e) {
