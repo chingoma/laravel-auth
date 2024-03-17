@@ -66,7 +66,7 @@ class AccessController extends BaseAccessController
                 'code' => 400,
                 'success' => true,
                 'message' => 'Successfully.',
-                'email' => $user->email,
+                'username' => $user->email,
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
             ]);
