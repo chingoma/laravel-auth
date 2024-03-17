@@ -65,7 +65,7 @@ class AccessController extends BaseAccessController
             return response()->json([
                 'code' => 400,
                 'success' => true,
-                'message' => "Successfully.",
+                'message' => 'Successfully.',
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
             ]);
@@ -117,7 +117,7 @@ class AccessController extends BaseAccessController
             return response()->json([
                 'code' => 400,
                 'success' => true,
-                'message' => "Successfully.",
+                'message' => 'Successfully.',
                 'user' => $user,
                 'permissions' => [],
                 'notifications' => [],
