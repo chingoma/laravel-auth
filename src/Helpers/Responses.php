@@ -16,7 +16,7 @@ class Responses
         ]);
     }
 
-    public static function error($message = 'An error occurred.', $data = [],$code = 400 ): JsonResponse
+    public static function error($message = 'An error occurred.', $data = [], $code = 400): JsonResponse
     {
         return response()->json([
             'code' => $code,
@@ -26,7 +26,7 @@ class Responses
         ]);
     }
 
-    public static function passwordResetLinkSuccess($message = 'Password resent link sent successfully.', $data = [],$code = 200): JsonResponse
+    public static function passwordResetLinkSuccess($message = 'Password resent link sent successfully.', $data = [], $code = 200): JsonResponse
     {
         return response()->json([
             'code' => $code,
