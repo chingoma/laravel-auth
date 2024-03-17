@@ -42,15 +42,10 @@ class AccessController extends BaseAccessController
                 ->first();
 
             if ($request->getParsedBody()['grant_type'] == 'refresh_token') {
-                Log::info('Creating refresh token');
-                $otp = rand(100000, 999999);
-                Otp::where('user_id', $user->id)->delete();
-                $store = new Otp();
-                $store->status = 'valid';
-                $store->user_id = $user->id;
-                $store->otp = $otp;
-                $store->expires_at = now()->addMinutes(config('lockminds-auth.otp.ttl'));
-                $store->save();
+                if(config("lockminds-auth.logging")) {
+                    Log::info('Creating refresh token');
+                }
+                Auths::storeAndSendOTP($user->id,"valid");
             }
 
             //issue token
@@ -62,7 +57,9 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
             if ($request->getParsedBody()['grant_type'] == 'password') {
-                Log::info('Creating new token');
+                if(config("lockminds-auth.logging")) {
+                    Log::info('Creating new token');
+                }
                 Auths::storeAndSendOTP($user->id);
             }
 
@@ -93,7 +90,7 @@ class AccessController extends BaseAccessController
             $otp = Otp::where('user_id', \auth()->id())
                 ->where('status', 'invalid')
                 ->where('otp', $request->getParsedBody()['otp'])
-                ->where('expires_at', '>', now())
+                ->where('expires_at', '>', now(getenv("TIMEZONE")))
                 ->first();
 
             if (empty($otp->otp)) {

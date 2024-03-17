@@ -7,4 +7,5 @@ return [
         'ttl' => 3,
     ], //minutes
     'middleware' => ['OTPVerifiedMiddleware'],
+    'logging' => true,
 ];
