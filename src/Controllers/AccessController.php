@@ -41,10 +41,10 @@ class AccessController extends BaseAccessController
                 ->first();
 
             if ($request->getParsedBody()['grant_type'] == 'refresh_token') {
-                if(config("lockminds-auth.logging")) {
+                if (config('lockminds-auth.logging')) {
                     Log::info('Creating refresh token');
                 }
-                Auths::storeAndSendOTP($user->id,"valid");
+                Auths::storeAndSendOTP($user->id, 'valid');
             }
 
             //issue token
@@ -56,7 +56,7 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
             if ($request->getParsedBody()['grant_type'] == 'password') {
-                if(config("lockminds-auth.logging")) {
+                if (config('lockminds-auth.logging')) {
                     Log::info('Creating new token');
                 }
                 Auths::storeAndSendOTP($user->id);
@@ -84,7 +84,7 @@ class AccessController extends BaseAccessController
             $otp = Otp::where('user_id', \auth()->id())
                 ->where('status', 'invalid')
                 ->where('otp', $request->getParsedBody()['otp'])
-                ->where('expires_at', '>', now(getenv("TIMEZONE")))
+                ->where('expires_at', '>', now(getenv('TIMEZONE')))
                 ->first();
 
             if (empty($otp->otp)) {
