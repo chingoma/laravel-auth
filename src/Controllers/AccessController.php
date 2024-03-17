@@ -130,7 +130,7 @@ class AccessController extends BaseAccessController
 
             return response()->json($user);
         } catch (ModelNotFoundException $e) { // email notfound
-            return Responses::badCredentials(code: 400);
+            return Responses::badCredentials();
         } catch (Exception $e) {
             return Responses::unhandledException(exception: $e, code: 400);
         }

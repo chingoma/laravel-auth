@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 
 class Responses
 {
-    public static function success($code = 200, $message = 'success', $data = []): JsonResponse
+    public static function success($message = 'Successfully.', $data = [], $code = 200): JsonResponse
     {
         return response()->json([
             'code' => $code,
@@ -16,7 +16,7 @@ class Responses
         ]);
     }
 
-    public static function error($code, $message = 'error', $data = []): JsonResponse
+    public static function error($message = 'An error occurred.', $data = [],$code = 400 ): JsonResponse
     {
         return response()->json([
             'code' => $code,
@@ -26,7 +26,7 @@ class Responses
         ]);
     }
 
-    public static function passwordResetLinkSuccess($code, $message = 'error', $data = []): JsonResponse
+    public static function passwordResetLinkSuccess($message = 'Password resent link sent successfully.', $data = [],$code = 200): JsonResponse
     {
         return response()->json([
             'code' => $code,
@@ -100,7 +100,7 @@ class Responses
         ]);
     }
 
-    public static function badCredentials($code, $message = 'bad credentials', $data = []): JsonResponse
+    public static function badCredentials($message = 'bad credentials', $data = [], $code = 400): JsonResponse
     {
         return response()->json([
             'code' => $code,
