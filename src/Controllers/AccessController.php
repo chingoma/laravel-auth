@@ -54,7 +54,7 @@ class AccessController extends BaseAccessController
             $user->put('refresh_token', $data['refresh_token']);
             $user->put('expires_at', $data['expires_in']);
             $user->put('status', 'success');
-            //            \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse($user->id);
+            \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse($user->id);
 
             return response()->json($user);
         } catch (ModelNotFoundException $e) { // email notfound
