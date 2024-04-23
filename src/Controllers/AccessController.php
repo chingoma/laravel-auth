@@ -48,13 +48,14 @@ class AccessController extends BaseAccessController
             //convert json to array
             $data = json_decode($content, true);
 
+            $id = $user->id;
             //add access token to user
             $user = collect($user);
             $user->put('access_token', $data['access_token']);
             $user->put('refresh_token', $data['refresh_token']);
             $user->put('expires_at', $data['expires_in']);
             $user->put('status', 'success');
-            \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse($user->id);
+            \Lockminds\LaravelAuth\Jobs\StoreAndSendOTP::dispatchAfterResponse($id);
 
             return response()->json($user);
         } catch (ModelNotFoundException $e) { // email notfound
