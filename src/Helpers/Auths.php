@@ -18,11 +18,11 @@ class Auths
 
             Otp::where('user_id', $key)->delete();
             $user = User::find($key);
-            if(env('APP_ENV') == 'local'){
+            if (env('APP_ENV') == 'local') {
                 \Log::info('Sending local otp for '.$key);
 
                 $otp = 1234;
-            }else{
+            } else {
                 \Log::info('Sending prod for '.$key);
 
                 $otp = rand(100000, 999999);
