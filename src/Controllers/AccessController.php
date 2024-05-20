@@ -277,6 +277,4 @@ class AccessController extends BaseAccessController
             return Responses::unhandledThrowable(throwable: $throwable, code: 'unhandledException');
         }
     }
-
-
 }
