@@ -18,8 +18,15 @@ class Auths
 
             Otp::where('user_id', $key)->delete();
             $user = User::find($key);
-            $otp = rand(100000, 999999);
-            $otp = 1234;
+            if(env('APP_ENV') == 'local'){
+                \Log::info('Sending local otp for '.$key);
+
+                $otp = 1234;
+            }else{
+                \Log::info('Sending prod for '.$key);
+
+                $otp = rand(100000, 999999);
+            }
             $store = new Otp();
             $store->user_id = $user->id;
             $store->otp = $otp;
